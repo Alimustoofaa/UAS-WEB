@@ -8,7 +8,7 @@
         <h3>Profil @{{ current_user.username }}</h3>
     </div>
     <div class="card-body">
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             {{form.csrf_token}}            
             <div class="mb-3">
                 <div>Email</div>
@@ -24,7 +24,7 @@
             </div>
             <div class="mb-3">
                 {{form.profpic.label(class='form-label')}} 
-                {{form.profpic(class='form-control')}}
+                {{form.profpic(class='form-control', placeholder='Upload gambar')}}
             </div>
             <div class="mb-3">
                 {{form.password.label(class='form-label')}} 

@@ -2,8 +2,11 @@ from flask import render_template, redirect, flash
 from simplegram.forms import LoginForm, RegisterForm, ProfileForm, ResetPasswordForm
 from simplegram.models.models import User
 from config import db
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
+from pathlib import Path
+from simplegram.ai.face_validation import validation_face
 
 def login():
     if current_user.is_authenticated:
@@ -87,6 +90,39 @@ def my_profile():
         form.profpic.data = current_user.profpic
         form.description.data = current_user.description
 
+    return render_template('profil.html', form=form, )
+
+@login_required
+def my_profile_post():
+    form = ProfileForm()
+
+    user = User.query.get(current_user.id)
+    user.fullname = form.fullname.data
+    user.description = form.description.data
+
+    if form.profpic.data:
+        imFile = form.profpic.data
+        fileName = secure_filename(imFile.filename)
+
+        # save path
+        path_saved = f'./static/profiles/{user.username}'
+        Path(path_saved).mkdir(parents=True, exist_ok=True)
+        imFile.save(f'{path_saved}/{fileName}')
+        
+        # validation face
+        if not validation_face(f'{path_saved}/{fileName}'):
+            flash({'error': 'validasi foto gagal, silahkan upload foto muka'})
+            return render_template('profil.html', form=form, )
+        else:
+            user.profpic = fileName
+            
+    if form.password.data:
+        safe_pass = generate_password_hash(form.password.data)
+        user.password = safe_pass
+    
+    db.session.commit()
+
+    flash({'info': 'berhasil simpan profile'})
     return render_template('profil.html', form=form, )
 
 def logout():

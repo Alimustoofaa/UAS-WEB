@@ -20,4 +20,6 @@ SG.route('/reset_password')(reset_password)
 SG.route('/reset_password', methods=['POST'])(reset_password_post)
 
 SG.route('/myprofile')(my_profile)
+SG.route('/myprofile', methods=['POST'])(my_profile_post)
+
 SG.route('/mypost')(my_post)
