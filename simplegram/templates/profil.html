@@ -1,0 +1,43 @@
+{% extends 'base_member.html' %}
+{% block title %}
+    Profil Saya
+{% endblock title %}
+{% block postarea %}
+<div class="card">
+    <div class="card-header d-flex justify-content-center">
+        <h3>Profil @{{ current_user.username }}</h3>
+    </div>
+    <div class="card-body">
+        <form action="" method="post">
+            {{form.csrf_token}}            
+            <div class="mb-3">
+                <div>Email</div>
+                <div>{{current_user.email}}</div>
+            </div>
+            <div class="mb-3">
+                {{form.fullname.label(class='form-label')}} 
+                {{form.fullname(class='form-control')}}
+            </div>
+            <div class="mb-3">
+                {{form.description.label(class='form-label')}} 
+                {{form.description(class='form-control')}}
+            </div>
+            <div class="mb-3">
+                {{form.profpic.label(class='form-label')}} 
+                {{form.profpic(class='form-control')}}
+            </div>
+            <div class="mb-3">
+                {{form.password.label(class='form-label')}} 
+                {{form.password(class='form-control')}}
+            </div>
+            <div class="mb-3">
+                {{form.confirm.label(class='form-label')}} 
+                {{form.confirm(class='form-control')}}
+            </div>
+            <div class="d-grid gap-2">
+            {{form.submit(class='btn btn-primary btn-large btn-block')}}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock postarea %}
