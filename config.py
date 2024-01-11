@@ -1,13 +1,18 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
-SECRET_KEY = '4YrzfpQ4kGXjuP6wasdfKJwer*&6qwasd'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 DB = {
-    'host': 'sql12.freemysqlhosting.net:3306',
-    'user': 'sql12675593',
-    'pass': 'XTGCB4c96D',
-    'name': 'sql12675593'
+    'host': os.getenv('DB_HOST'),
+    'user': os.getenv('DB_USER'),
+    'pass': os.getenv('DB_PASS'),
+    'name': os.getenv('DB_NAME')
 }
 
 DB_URI = f'mysql+pymysql://{DB["user"]}:{DB["pass"]}@{DB["host"]}/{DB["name"]}?charset=utf8mb4'
